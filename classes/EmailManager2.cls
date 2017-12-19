@@ -21,35 +21,40 @@ public with sharing class EmailManager2 {
 			mail.setSenderDisplayName('Speaker Confirmation');
 
 			//check FromAddress
-    		if(emailMessageWrapper.FromAddress != null && emailMessageWrapper.FromAddress.length() > 0)
+    		if (emailMessageWrapper.FromAddress != null && emailMessageWrapper.FromAddress.length() > 0) {
     			mail.setReplyTo(emailMessageWrapper.FromAddress);
+            }
 
     		//check ToAddress
-    		if(emailMessageWrapper.ToAddress != null && emailMessageWrapper.ToAddress.length() > 0)
+    		if (emailMessageWrapper.ToAddress != null && emailMessageWrapper.ToAddress.length() > 0 ) {
     			mail.setToAddresses(new String[] { emailMessageWrapper.ToAddress });
-    		else
+            }
+    		else {
     			mail.setTargetObjectId(emailMessageWrapper.ToAddressId);
+            }
 
     		//check Bcc
-    		if(emailMessageWrapper.BccAddress != null && emailMessageWrapper.BccAddress.length() > 0)
+    		if (emailMessageWrapper.BccAddress != null && emailMessageWrapper.BccAddress.length() > 0) {
     			mail.setBccAddresses(new String[] {emailMessageWrapper.BccAddress });
+            }
 
 
     		//check subject
 			String subject = null;
 
-    		if(emailMessageWrapper.Subject != null && emailMessageWrapper.Subject.length() > 0) {
+    		if (emailMessageWrapper.Subject != null && emailMessageWrapper.Subject.length() > 0) {
     			mail.setSubject(emailMessageWrapper.Subject);
     			subject = emailMessageWrapper.Subject;
     		}
-    		else
+    		else {
     			subject = emailTemplate.Subject;
+            }
 
     		
     		//Replace key in subject
-    		if(emailMessageWrapper.ParameterSubjectMap != null) {
+    		if (emailMessageWrapper.ParameterSubjectMap != null) {
     			
-    			for(String key: emailMessageWrapper.ParameterSubjectMap.keySet()){
+    			for (String key: emailMessageWrapper.ParameterSubjectMap.keySet()) {
 	    			
 	    			subject = subject.replace(key, (emailMessageWrapper.ParameterSubjectMap.get(key) == null ? '' : emailMessageWrapper.ParameterSubjectMap.get(key)));
 	    		}
@@ -59,7 +64,7 @@ public with sharing class EmailManager2 {
     		
     		
     		//Replace
-    		if(emailMessageWrapper.ParameterBodyMap != null) {
+    		if (emailMessageWrapper.ParameterBodyMap != null) {
 	    		String htmlBody = emailTemplate.HtmlValue;
 	    		String plainBody = emailTemplate.Body;
 	    		
@@ -76,7 +81,8 @@ public with sharing class EmailManager2 {
     		}
     		listSingleEmailMessages.add(mail);
     	}
-    	if(!Test.isRunningTest())
-    	listEmailResult = Messaging.sendEmail(listSingleEmailMessages);
+    	if (!Test.isRunningTest()) {
+            listEmailResult = Messaging.sendEmail(listSingleEmailMessages);
+        }
     }
 }
